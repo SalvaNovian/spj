@@ -1,89 +1,44 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="id">
 
-@section('content')
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<div class="row">
+    <title>Spj Arsip</title>
 
-    <div class="col-md-3">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-        <div class="card dashboard-card">
+    {{-- Fix: Chart.js dimuat di head agar sudah tersedia sebelum script di @yield('content') dijalankan --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
 
-            <div class="card-body">
+<body>
 
-                <h6>Total User</h6>
+<div class="d-flex">
 
-                <h2>0</h2>
+    {{-- Sidebar --}}
+    @include('layouts.sidebar')
 
-            </div>
+    {{-- Content --}}
+    <div class="flex-grow-1 main-content">
 
-        </div>
+        {{-- Navbar --}}
+        @include('layouts.navbar')
 
-    </div>
+        <main class="container-fluid p-4">
 
-    <div class="col-md-3">
+            @yield('content')
 
-        <div class="card dashboard-card">
-
-            <div class="card-body">
-
-                <h6>Total SPJ</h6>
-
-                <h2>0</h2>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="col-md-3">
-
-        <div class="card dashboard-card">
-
-            <div class="card-body">
-
-                <h6>Menunggu</h6>
-
-                <h2>0</h2>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="col-md-3">
-
-        <div class="card dashboard-card">
-
-            <div class="card-body">
-
-                <h6>Final</h6>
-
-                <h2>0</h2>
-
-            </div>
-
-        </div>
+        </main>
 
     </div>
 
 </div>
 
-<div class="card dashboard-card mt-4">
+@include('layouts.footer')
 
-    <div class="card-header">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
-        SPJ Terbaru
-
-    </div>
-
-    <div class="card-body">
-
-        Belum ada data.
-
-    </div>
-
-</div>
-
-@endsection
+</body>
+</html>

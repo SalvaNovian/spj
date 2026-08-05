@@ -5,24 +5,48 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
-
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <title>{{ config('app.name', 'SPJ Arsip') }} - Login</title>
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <style>
+            body {
+                background-color: #f4f6f9;
+            }
+            .login-container {
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .login-card {
+                width: 100%;
+                max-width: 400px;
+                padding: 2rem;
+                border-radius: 0.5rem;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                background: white;
+            }
+            .login-logo {
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+            .login-logo h4 {
+                margin: 0;
+                font-weight: normal;
+            }
+            .login-logo b {
+                font-weight: bold;
+                color: #0d6efd;
+            }
+        </style>
     </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                </a>
-            </div>
-
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+    <body>
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-logo">
+                    <h4><b>SPJ</b> Arsip</h4>
+                </div>
                 {{ $slot }}
             </div>
         </div>

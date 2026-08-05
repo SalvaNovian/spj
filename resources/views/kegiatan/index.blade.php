@@ -1,56 +1,130 @@
-@extends('layouts.app')
-
+@extends('layouts.dashboard')
 @section('content')
 
-<h3>Data Kegiatan</h3>
+<div class="container-fluid">
 
-<div class="card dashboard-card mt-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
 
-    <div class="card-body">
+        <h3>Data Kegiatan</h3>
 
-        <a href="{{ route('kegiatan.create') }}" class="btn btn-primary mb-3">
-            Tambah Kegiatan
-        </a>
+        <div class="d-flex">
 
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Kode</th>
-                        <th>Nama Kegiatan</th>
-                        <th>Tanggal</th>
-                        <th>Lokasi</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($kegiatan as $no => $k)
-                        <tr>
-                            <td>{{ $no + 1 }}</td>
-                            <td>{{ $k->kode }}</td>
-                            <td>{{ $k->nama }}</td>
-                            <td>{{ $k->tanggal }}</td>
-                            <td>{{ $k->lokasi }}</td>
-                            <td>
-                                <a href="{{ route('kegiatan.edit', $k) }}" class="btn btn-sm btn-warning">
-                                    Edit
-                                </a>
-                                <form action="{{ route('kegiatan.destroy', $k) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-sm btn-danger" onclick="return confirm('Hapus data?')">
-                                        Hapus
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            <form action="{{ route('kegiatan.index') }}"
+                method="GET"
+                class="me-2">
+
+                <input
+                    type="text"
+                    name="search"
+                    class="form-control"
+                    placeholder="Cari kegiatan..."
+                    value="{{ $search }}">
+
+            </form>
+
+            <a href="{{ route('kegiatan.create') }}"
+            class="btn btn-primary">
+
+                <i class="bi bi-plus-circle"></i>
+
+                Tambah Kegiatan
+
+            </a>
+
         </div>
 
     </div>
+
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <div class="card dashboard-card">
+
+        <div class="card-body">
+
+            <table class="table table-bordered table-hover">
+
+                <thead class="table-primary">
+                    <tr>
+                        <th>No</th>
+                        <th>Kode</th>
+                        <th>Nama</th>
+                        <th>Tanggal</th>
+                        <th>Lokasi</th>
+                        <th>Keterangan</th>
+                        <th width="180">Aksi</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @forelse($kegiatan as $item)
+
+                    <tr>
+
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $item->kode }}</td>
+                        <td>{{ $item->nama }}</td>
+                        <td>{{ $item->tanggal }}</td>
+                        <td>{{ $item->lokasi }}</td>
+                        <td>{{ $item->keterangan }}</td>
+
+                        <td>
+
+                            <a href="{{ route('kegiatan.edit',$item->id) }}"
+                                class="btn btn-warning btn-sm">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+
+                            <form action="{{ route('kegiatan.destroy',$item->id) }}"
+                                method="POST"
+                                class="d-inline">
+
+                                @csrf
+                                @method('DELETE')
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Yakin ingin menghapus kegiatan ini?')">
+
+                                    <i class="bi bi-trash"></i>
+
+                                </button>
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+                    @empty
+
+                    <tr>
+                        <td colspan="7" class="text-center">
+                            Belum ada data kegiatan.
+                        </td>
+                    </tr>
+
+                    @endforelse
+
+                </tbody>
+
+            </table>
+
+            <div class="mt-3">
+
+                {{ $kegiatan->withQueryString()->links() }}
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
 
 @endsection

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
 
 @section('content')
 
@@ -6,9 +6,31 @@
 
     <h3>Data User</h3>
 
-    <a href="{{ route('users.create') }}" class="btn btn-primary mb-3">
-        <i class="bi bi-plus-circle"></i> Tambah User
-    </a>
+    <div class="d-flex">
+
+        <form action="{{ route('users.index') }}"
+              method="GET"
+              class="me-2">
+
+            <input
+                type="text"
+                name="search"
+                class="form-control"
+                placeholder="Cari nama, username, NIP..."
+                value="{{ $search }}">
+
+        </form>
+
+        <a href="{{ route('users.create') }}"
+           class="btn btn-primary">
+
+            <i class="bi bi-plus-circle"></i>
+
+            Tambah User
+
+        </a>
+
+    </div>
 
 </div>
 
@@ -104,6 +126,12 @@
             </tbody>
 
         </table>
+
+        <div class="mt-3">
+
+            {{ $users->withQueryString()->links() }}
+
+        </div>
 
     </div>
 

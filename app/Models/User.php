@@ -32,4 +32,15 @@ class User extends Authenticatable
             'status' => 'boolean',
         ];
     }
+
+    public function spjs()
+{
+    return $this->hasMany(Spj::class);
+}
+
+public function customNotifications()
+{
+    return $this->hasMany(Notification::class)
+        ->orderBy('created_at','desc');
+}
 }

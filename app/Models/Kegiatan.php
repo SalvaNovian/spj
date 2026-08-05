@@ -13,4 +13,9 @@ class Kegiatan extends Model
         'lokasi',
         'keterangan',
     ];
+
+    public function spjs()
+{
+    return $this->hasMany(Spj::class);
+}
 }

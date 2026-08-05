@@ -1,7 +1,7 @@
 <div class="sidebar">
 
     <div class="logo">
-        SPJ ARSIP
+        SEKETARIAT
     </div>
 
     <a href="{{ route('dashboard') }}">
@@ -9,30 +9,62 @@
         Dashboard
     </a>
 
-    <a href="{{ route('users.index') }}">
-        <i class="bi bi-people"></i>
-        Data User
-    </a>
+<!-- ADMIN -->
+    @if(Auth::user()->role == 'admin')
 
-    <a href="{{ route('kegiatan.index') }}" class="nav-link">
-        <i class="bi bi-calendar-event"></i>
-        <span>Data Kegiatan</span>
-    </a>
+        <a href="{{ route('users.index') }}">
+            <i class="bi bi-people"></i>
+            Data User
+        </a>
 
-    <a href="#">
-        <i class="bi bi-folder2-open"></i>
-        Data SPJ
-    </a>
+        <a href="{{ route('kegiatan.index') }}">
+            <i class="bi bi-calendar-event"></i>
+            Data Kegiatan
+        </a>
 
-    <a href="#">
-        <i class="bi bi-check-circle"></i>
-        Verifikasi
-    </a>
+        <a href="{{ route('spj.index') }}">
+            <i class="bi bi-folder2-open"></i>
+            Data SPJ
+        </a>
 
-    <a href="#">
-        <i class="bi bi-file-earmark-bar-graph"></i>
-        Laporan
-    </a>
+        <a href="{{ route('verifikasi.index') }}">
+            <i class="bi bi-check-circle"></i>
+            Verifikasi
+        </a>
+        
+
+        <a href="{{ route('laporan.index') }}">
+            <i class="bi bi-file-earmark-bar-graph"></i>
+            Laporan
+        </a>
+
+    @endif
+
+<!-- USER -->
+    @if(Auth::user()->role == 'user')
+
+        <a href="{{ route('spj.index') }}">
+            <i class="bi bi-folder2-open"></i>
+            Data SPJ 
+        </a>
+
+    @endif
+
+
+<!-- PIMPINAN -->
+    @if(Auth::user()->role == 'pimpinan')
+
+        <a href="{{ route('pimpinan.index') }}">
+            <i class="bi bi-person-check"></i>
+            Persetujuan
+        </a>
+
+        <a href="{{ route('laporan.index') }}">
+            <i class="bi bi-file-earmark-bar-graph"></i>
+            Laporan
+        </a>
+
+    @endif
 
     <hr>
 
@@ -40,8 +72,11 @@
         @csrf
 
         <button class="btn btn-danger w-100">
+
             Logout
+
         </button>
+
     </form>
 
 </div>

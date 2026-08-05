@@ -7,11 +7,25 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::latest()->get();
+        $search = $request->search;
 
-        return view('users.index', compact('users'));
+        $users = User::when($search, function ($query) use ($search) {
+
+            $query->where('nama', 'like', "%{$search}%")
+                ->orWhere('username', 'like', "%{$search}%")
+                ->orWhere('nip', 'like', "%{$search}%")
+                ->orWhere('jabatan', 'like', "%{$search}%");
+
+        })
+        ->orderBy('nama')
+        ->paginate(10);
+
+        return view('users.index', compact(
+            'users',
+            'search'
+        ));
     }
 
     public function create()
