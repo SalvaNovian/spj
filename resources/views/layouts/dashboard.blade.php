@@ -7,13 +7,35 @@
 
     <title>Spj Arsip</title>
 
+    <script>
+    (() => {
+        const theme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-bs-theme', theme);
+
+        if (localStorage.getItem('sidebar') === 'collapsed') {
+            document.documentElement.classList.add('preload-collapsed');
+        }
+    })();
+    </script>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     {{-- Fix: Chart.js dimuat di head agar sudah tersedia sebelum script di @yield('content') dijalankan --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body>
+<body id="body">
+
+{{-- Page Loader --}}
+<div id="pageLoader" class="page-loader">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+<script>
+    // Langsung hilangkan loader secepat mungkin saat render tanpa menunggu external assets
+    document.getElementById('pageLoader').classList.add('fade-out');
+</script>
 
 <div class="d-flex">
 
@@ -37,8 +59,6 @@
 </div>
 
 @include('layouts.footer')
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use App\Helpers\Activity;
 
 class SpjController extends Controller
 {
@@ -71,9 +72,6 @@ class SpjController extends Controller
             'file'        => 'required|mimes:pdf|max:10240',
         ]);
 
-        // Fix: sanitasi nama file agar tidak mengandung karakter spesial (+, spasi, dll)
-        // yang bisa menyebabkan URL rusak saat file PDF dibuka di halaman verifikasi.
-        // Str::slug mengubah nama file menjadi format URL-safe (huruf kecil, strip sebagai pemisah).
         $namaFile = time() . '_' . Str::slug(
             pathinfo($request->file('file')->getClientOriginalName(), PATHINFO_FILENAME)
         ) . '.pdf';
@@ -94,6 +92,10 @@ class SpjController extends Controller
             'catatan'     => null,
             'revisi_ke'   => 0,
         ]);
+
+        Activity::add(
+        'Upload SPJ '.$request->nomor_spj
+    );
 
         return redirect()
             ->route('spj.index')

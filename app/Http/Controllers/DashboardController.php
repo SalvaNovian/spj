@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Kegiatan;
 use App\Models\Spj;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -41,6 +42,11 @@ class DashboardController extends Controller
                 
                'grafik' => $grafik,
 
+               'notifications' => Notification::where('user_id', Auth::id())
+                                    ->latest()
+                                    ->take(5)
+                                    ->get(),
+
             ]);
 
         }
@@ -59,14 +65,24 @@ class DashboardController extends Controller
                                 ->where('status','revisi')
                                 ->count(),
 
+                'diterima' => Spj::where('user_id',Auth::id())
+                                ->where('status','diterima')
+                                ->count(),
+
                 'final' => Spj::where('user_id',Auth::id())
                                 ->where('status','final')
                                 ->count(),
 
                 'spjTerbaru' => Spj::where('user_id',Auth::id())
+                                ->with('kegiatan')
                                 ->latest()
                                 ->take(5)
                                 ->get(),
+
+                'notifications' => Notification::where('user_id', Auth::id())
+                                    ->latest()
+                                    ->take(5)
+                                    ->get(),
 
             ]);
 
@@ -81,6 +97,12 @@ class DashboardController extends Controller
             'ditolak' => Spj::where('status','ditolak')->count(),
 
             'spjTerbaru' => Spj::whereIn('status',['diterima','final'])
+                                ->with(['user','kegiatan'])
+                                ->latest()
+                                ->take(5)
+                                ->get(),
+
+            'notifications' => Notification::where('user_id', Auth::id())
                                 ->latest()
                                 ->take(5)
                                 ->get(),

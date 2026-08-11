@@ -15,24 +15,39 @@ $unread = Notification::where('user_id', auth()->id())
 
 <div class="topbar d-flex justify-content-between align-items-center">
 
-    <h5 class="mb-0">
-        Dashboard
-    </h5>
+    <div class="d-flex align-items-center">
+
+        <button
+            id="sidebarToggle"
+            class="btn btn-icon-only me-3">
+
+            <i class="bi bi-list"></i>
+
+        </button>
+
+        <h5 class="mb-0">
+
+            DISBUDPAR
+
+        </h5>
+
+    </div>
 
     <div class="d-flex align-items-center">
 
         <div class="dropdown me-4">
 
             <button
-                class="btn btn-light position-relative"
+                id="notifDropdownBtn"
+                class="btn btn-icon-only position-relative"
                 type="button"
                 data-bs-toggle="dropdown">
 
-                <i class="bi bi-bell fs-5"></i>
+                <i class="bi bi-bell"></i>
 
                 @if($unread > 0)
 
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    <span id="notifBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
 
                         {{ $unread }}
 
@@ -118,6 +133,17 @@ $unread = Notification::where('user_id', auth()->id())
 
         </div>
 
+        <div class="d-flex align-items-center">
+
+        <button
+            id="themeToggle"
+            class="btn btn-icon-only me-3"
+            title="Ganti Tema">
+
+            <i class="bi bi-moon-fill"></i>
+
+        </button>
+
         <div>
 
             Selamat Datang,
@@ -128,4 +154,30 @@ $unread = Notification::where('user_id', auth()->id())
 
     </div>
 
+    </div>
+
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const btn = document.getElementById('notifDropdownBtn');
+    if (!btn) return;
+
+    btn.addEventListener('shown.bs.dropdown', function () {
+        const badge = document.getElementById('notifBadge');
+        if (!badge) return;
+
+        // Hilangkan badge langsung
+        badge.remove();
+
+        // Kirim AJAX untuk tandai semua dibaca
+        fetch("{{ route('notification.readAll') }}", {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json',
+            }
+        });
+    });
+});
+</script>

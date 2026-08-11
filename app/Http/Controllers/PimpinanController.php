@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Spj;
 use Illuminate\Http\Request;
 use App\Models\Notification;
+use App\Helpers\Activity;
 
 class PimpinanController extends Controller
 {
@@ -97,6 +98,10 @@ class PimpinanController extends Controller
             'message' => $pesan,
 
         ]);
+
+        Activity::add(
+        'Persetujuan Pimpinan SPJ '.$spj->nomor_spj.' menjadi '.$request->status
+    );
 
         return redirect()
                 ->route('pimpinan.index')

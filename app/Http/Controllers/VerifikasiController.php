@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Spj;
 use Illuminate\Http\Request;
 use App\Models\Notification;
+use App\Helpers\Activity;
 
 class VerifikasiController extends Controller
 {
@@ -66,6 +67,10 @@ class VerifikasiController extends Controller
             'message'=>'SPJ '.$spj->nomor_spj.' telah '.$request->status,
 
         ]);
+
+        Activity::add(
+        'Verifikasi SPJ '.$spj->nomor_spj.' menjadi '.$request->status
+    );
 
         return redirect()
             ->route('verifikasi.index')
